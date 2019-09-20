@@ -50,16 +50,13 @@ class LocationUpdatesService : Service() {
 
             intent.putExtra(EXTRA_STARTED_FROM_NOTIFICATION, true)
 
-            val activityPendingIntent = PendingIntent.getBroadcast(this, 0, Intent(STOP_SERVICE), 0)
-
             val builder = NotificationCompat.Builder(this)
-                    .addAction(R.drawable.abc_cab_background_top_material, "Stop location Service",
-                            activityPendingIntent)
-                    .setContentTitle("Background Location Service is Running")
+                    .setContentTitle("GPS")
                     .setOngoing(true)
                     .setSound(null)
                     .setPriority(Notification.PRIORITY_HIGH)
-                    .setSmallIcon(R.drawable.navigation_empty_icon)
+                    .setSmallIcon(R.drawable.ic_stat_near_me)
+                    .setColor(0x26A69A)
                     .setWhen(System.currentTimeMillis())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 builder.setChannelId(CHANNEL_ID)
