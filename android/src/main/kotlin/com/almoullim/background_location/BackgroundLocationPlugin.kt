@@ -136,6 +136,13 @@ class BackgroundLocationPlugin() : MethodCallHandler, PluginRegistry.RequestPerm
 
     private inner class MyReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
+            if (activity.isFinishing or activity.isDestroyed) {
+                mService?.removeLocationUpdates()
+
+                LocalBroadcastManager.getInstance(activity).unregisterReceiver(myReceiver!!)
+
+                return
+            }
             val location = intent.getParcelableExtra<Location>(LocationUpdatesService.EXTRA_LOCATION)
             if (location != null) {
                 val locationMap = HashMap<String, Double>()
