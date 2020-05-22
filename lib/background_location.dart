@@ -40,18 +40,17 @@ class BackgroundLocation {
 
   /// Ask the user for location permissions
   static getPermissions({Function onGranted, Function onDenied}) async {
-    await PermissionHandler()
-        .requestPermissions([PermissionGroup.locationAlways]);
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.locationAlways);
+    await Permission.locationAlways.request();
+
+    PermissionStatus permission = await Permission.locationAlways.status;
     if (permission == PermissionStatus.granted) {
       if (onGranted != null) {
         onGranted();
       }
     } else if (permission == PermissionStatus.denied ||
-        permission == PermissionStatus.disabled ||
+        permission == PermissionStatus.permanentlyDenied ||
         permission == PermissionStatus.restricted ||
-        permission == PermissionStatus.unknown) {
+        permission == PermissionStatus.undetermined) {
       if (onDenied != null) {
         onDenied();
       }
@@ -60,8 +59,7 @@ class BackgroundLocation {
 
   /// Check what the current permissions status is
   static Future<PermissionStatus> checkPermissions() async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.locationAlways);
+    PermissionStatus permission = await Permission.locationAlways.status;
     return permission;
   }
 
